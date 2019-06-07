@@ -27,6 +27,8 @@ func LuaCallGo() {
 
 	L.OpenLibs()
 
+	L.PreloadModule("levi", Loader)
+
 	L.SetGlobal("GoDouble", L.NewFunction(GoDouble))
 
 	if er := L.DoFile("./main.lua"); er != nil {

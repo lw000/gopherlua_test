@@ -43,6 +43,9 @@ function main()
 
     print(os.date())
 
+    print(levi.myfunc("11111"))
+
+
 end
 
 main()
