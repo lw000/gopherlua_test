@@ -32,7 +32,7 @@ function update(d)
 end
 
 function main()
-    -- print("lua call go func; " .. GoDouble(20))
+    print("lua call go func; " .. GoDouble(20))
 
     for i = 1, 10 do
         print(i .. i)

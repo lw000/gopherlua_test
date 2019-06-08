@@ -16,8 +16,8 @@ func Loader(L *lua.LState) int {
 }
 
 func myFunc(L *lua.LState) int {
-	lv := L.ToInt(-1)
-	L.Push(lua.LString(lv))
+	v := L.ToInt(-1)
+	L.Push(lua.LString(v))
 
 	log.Println("test myfun")
 
