@@ -1,5 +1,13 @@
-function Double(a)
-    return a * a
+function double(a)
+    return a * 2
+end
+
+function maxmin( a, b )
+	if a > b then
+		return a, b
+	else
+		return b, a
+	end
 end
 
 function max(a, b)
@@ -24,7 +32,7 @@ function update(d)
 end
 
 function main()
-    print("lua call go func; " .. GoDouble(20))
+    -- print("lua call go func; " .. GoDouble(20))
 
     for i = 1, 10 do
         print(i .. i)
@@ -39,12 +47,14 @@ function main()
 
     print("min: " .. min(100, 200))
 
+    a, b = maxmin(100, 200)
+    print("maxmin: " .. a .. ", " .. b)
+
     print(os.clock())
 
     print(os.date())
 
-    print(levi.myfunc("11111"))
-
+    -- print(levi.myfunc("11111"))
 
 end
 

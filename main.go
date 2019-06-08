@@ -7,21 +7,13 @@ import (
 	"time"
 )
 
-var (
-	wg *sync.WaitGroup
-)
-
 func GoDouble(L *lua.LState) int {
-	lv := L.ToInt(1)
-	L.Push(lua.LNumber(lv * lv))
+	v := L.ToInt(1)
+	L.Push(lua.LNumber(v * 2))
 	return 1
 }
 
-func LuaCallGo() {
-	defer func() {
-		wg.Done()
-	}()
-
+func RunLuaApp() {
 	L := lua.NewState()
 	defer L.Close()
 
@@ -35,32 +27,22 @@ func LuaCallGo() {
 		log.Panic(er)
 	}
 
-	er := L.CallByParam(lua.P{
-		Fn:      L.GetGlobal("Double"),
-		NRet:    1,
-		Protect: true,
-	}, lua.LNumber(10))
-	if er != nil {
-		log.Panic(er)
-	}
-	ret := L.Get(-1)
-	L.Pop(-1)
+	LuaDouble(L, lua.LNumber(10))
+	LuaMax(L, lua.LNumber(100), lua.LNumber(200))
+	LuaMin(L, lua.LNumber(100), lua.LNumber(200))
+	log.Println(LuaMaxmin(L, lua.LNumber(100), lua.LNumber(200)))
 
-	res, ok := ret.(lua.LNumber)
-	if ok {
-		log.Println(int(res))
-	}
-
-	wg = &sync.WaitGroup{}
-
+	wg := &sync.WaitGroup{}
 	wg.Add(1)
-	go Update(L)
+	go Update(wg, L)
 	wg.Wait()
 }
 
-func Update(L *lua.LState) {
+func Update(wg *sync.WaitGroup, L *lua.LState) {
 	defer func() {
-		wg.Done()
+		if wg != nil {
+			wg.Done()
+		}
 	}()
 
 	t := time.NewTicker(time.Millisecond * 1000)
@@ -73,7 +55,8 @@ func Update(L *lua.LState) {
 				Protect: true,
 			}, lua.LNumber(time.Now().Unix()))
 			if er != nil {
-				log.Panic(er)
+				log.Println(er)
+				return
 			}
 			ret := L.Get(-1)
 			L.Pop(-1)
@@ -87,5 +70,5 @@ func Update(L *lua.LState) {
 }
 
 func main() {
-	LuaCallGo()
+	RunLuaApp()
 }

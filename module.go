@@ -12,7 +12,6 @@ var exports = map[string]lua.LGFunction{
 func Loader(L *lua.LState) int {
 	mod := L.SetFuncs(L.NewTable(), exports)
 	L.Push(mod)
-
 	return 1
 }
 
