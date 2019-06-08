@@ -28,7 +28,6 @@ end
 
 function update(d)
     print(d)
-    return 1
 end
 
 function main()

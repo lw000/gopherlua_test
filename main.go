@@ -13,7 +13,31 @@ func GoDouble(L *lua.LState) int {
 	return 1
 }
 
-func RunLuaApp() {
+func Update(wg *sync.WaitGroup, L *lua.LState) {
+	defer func() {
+		if wg != nil {
+			wg.Done()
+		}
+	}()
+
+	t := time.NewTicker(time.Millisecond)
+	for {
+		select {
+		case <-t.C:
+			er := L.CallByParam(lua.P{
+				Fn:      L.GetGlobal("update"),
+				NRet:    0,
+				Protect: true,
+			}, lua.LNumber(time.Now().UnixNano()/1e6))
+			if er != nil {
+				log.Println(er)
+				return
+			}
+		}
+	}
+}
+
+func main() {
 	L := lua.NewState()
 	defer L.Close()
 
@@ -35,39 +59,4 @@ func RunLuaApp() {
 	wg.Add(1)
 	go Update(wg, L)
 	wg.Wait()
-}
-
-func Update(wg *sync.WaitGroup, L *lua.LState) {
-	defer func() {
-		if wg != nil {
-			wg.Done()
-		}
-	}()
-
-	t := time.NewTicker(time.Millisecond * 1000)
-	for {
-		select {
-		case <-t.C:
-			er := L.CallByParam(lua.P{
-				Fn:      L.GetGlobal("update"),
-				NRet:    1,
-				Protect: true,
-			}, lua.LNumber(time.Now().Unix()))
-			if er != nil {
-				log.Println(er)
-				return
-			}
-			ret := L.Get(-1)
-			L.Pop(-1)
-
-			res, ok := ret.(lua.LNumber)
-			if ok {
-				log.Println(int(res))
-			}
-		}
-	}
-}
-
-func main() {
-	RunLuaApp()
 }
