@@ -1,16 +1,14 @@
 package main
 
 import (
-	"github.com/yuin/gopher-lua"
 	"log"
+
+	lua "github.com/yuin/gopher-lua"
 )
 
+// LuaDouble ...
 func LuaDouble(L *lua.LState, a lua.LValue) int {
-	er := L.CallByParam(lua.P{
-		Fn:      L.GetGlobal("double"),
-		NRet:    1,
-		Protect: true,
-	}, a)
+	er := L.CallByParam(lua.P{Fn: L.GetGlobal("double"), NRet: 1, Protect: true}, a)
 	if er != nil {
 		log.Println(er)
 		return 1
@@ -25,12 +23,9 @@ func LuaDouble(L *lua.LState, a lua.LValue) int {
 	return -1
 }
 
+// LuaMax ...
 func LuaMax(L *lua.LState, a, b lua.LValue) int {
-	er := L.CallByParam(lua.P{
-		Fn:      L.GetGlobal("max"),
-		NRet:    1,
-		Protect: true,
-	}, a, b)
+	er := L.CallByParam(lua.P{Fn: L.GetGlobal("max"), NRet: 1, Protect: true}, a, b)
 	if er != nil {
 		log.Println(er)
 		return 1
@@ -45,12 +40,9 @@ func LuaMax(L *lua.LState, a, b lua.LValue) int {
 	return -1
 }
 
+// LuaMin ...
 func LuaMin(L *lua.LState, a, b lua.LValue) int {
-	er := L.CallByParam(lua.P{
-		Fn:      L.GetGlobal("min"),
-		NRet:    1,
-		Protect: true,
-	}, a, b)
+	er := L.CallByParam(lua.P{Fn: L.GetGlobal("min"), NRet: 1, Protect: true}, a, b)
 	if er != nil {
 		log.Println(er)
 		return 1
@@ -65,12 +57,9 @@ func LuaMin(L *lua.LState, a, b lua.LValue) int {
 	return -1
 }
 
+// LuaMaxmin ...
 func LuaMaxmin(L *lua.LState, a, b lua.LValue) (max int, min int) {
-	er := L.CallByParam(lua.P{
-		Fn:      L.GetGlobal("maxmin"),
-		NRet:    2,
-		Protect: true,
-	}, a, b)
+	er := L.CallByParam(lua.P{Fn: L.GetGlobal("maxmin"), NRet: 2, Protect: true}, a, b)
 	if er != nil {
 		log.Println(er)
 		return 0, 0

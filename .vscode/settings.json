@@ -1,0 +1,10 @@
+{
+    "files.autoSave": "onFocusChange",
+    "editor.fontSize": 15,
+    "go.buildFlags": [],
+    "go.lintTool": "golint",
+    "go.lintOnSave": "workspace",
+    "go.formatTool": "goreturns",
+    "go.goroot": "H:\\software\\go",
+    "go.gopath": "H:\\gowork"
+}

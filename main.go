@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github.com/yuin/gopher-lua"
 	"log"
 	"sync"
 	"time"
+
+	lua "github.com/yuin/gopher-lua"
 )
 
 func GoDouble(L *lua.LState) int {
@@ -41,22 +42,20 @@ func main() {
 	L := lua.NewState()
 	defer L.Close()
 
-	L.OpenLibs()
-
 	L.PreloadModule("levi", Loader)
 	L.SetGlobal("GoDouble", L.NewFunction(GoDouble))
 
-	if er := L.DoFile("./main.lua"); er != nil {
+	if er := L.DoFile("./script/main.lua"); er != nil {
 		log.Panic(er)
 	}
 
-	LuaDouble(L, lua.LNumber(10))
-	LuaMax(L, lua.LNumber(100), lua.LNumber(200))
-	LuaMin(L, lua.LNumber(100), lua.LNumber(200))
+	log.Println(LuaDouble(L, lua.LNumber(10)))
+	log.Println(LuaMax(L, lua.LNumber(100), lua.LNumber(200)))
+	log.Println(LuaMin(L, lua.LNumber(100), lua.LNumber(200)))
 	log.Println(LuaMaxmin(L, lua.LNumber(100), lua.LNumber(200)))
 
-	wg := &sync.WaitGroup{}
-	wg.Add(1)
-	go Update(wg, L)
-	wg.Wait()
+	// wg := &sync.WaitGroup{}
+	// wg.Add(1)
+	// go Update(wg, L)
+	// wg.Wait()
 }
