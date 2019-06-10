@@ -8,12 +8,14 @@ import (
 	lua "github.com/yuin/gopher-lua"
 )
 
+// GoDouble ...
 func GoDouble(L *lua.LState) int {
 	v := L.ToInt(1)
 	L.Push(lua.LNumber(v * 2))
 	return 1
 }
 
+// Update ...
 func Update(wg *sync.WaitGroup, L *lua.LState) {
 	defer func() {
 		if wg != nil {

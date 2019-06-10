@@ -1,14 +1,16 @@
 package main
 
 import (
-	"github.com/yuin/gopher-lua"
 	"log"
+
+	lua "github.com/yuin/gopher-lua"
 )
 
 var exports = map[string]lua.LGFunction{
 	"myfunc": myFunc,
 }
 
+// Loader 加载库函数
 func Loader(L *lua.LState) int {
 	mod := L.SetFuncs(L.NewTable(), exports)
 	L.Push(mod)
